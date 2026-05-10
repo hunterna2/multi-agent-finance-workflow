@@ -5,9 +5,19 @@ Multi-Agent Finance Workflow — Streamlit UI
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
 
+import json
+import os
 import streamlit as st
 from langchain_core.messages import HumanMessage, SystemMessage
 from graph import graph
+
+RUN_HISTORY_FILE = os.path.join(os.path.dirname(__file__), "run_logs", "run_history.json")
+
+def load_run_history():
+    if not os.path.exists(RUN_HISTORY_FILE):
+        return []
+    with open(RUN_HISTORY_FILE) as f:
+        return json.load(f)
 
 st.set_page_config(
     page_title="AI Finance Team",
@@ -146,10 +156,61 @@ st.markdown('<div class="hero"><h1>🏦 AI Finance Team</h1>'
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
-st.markdown("**Ask the team anything financial**")
+tab_analyze, tab_metrics = st.tabs(["Analyze", "Metrics"])
 
-if "prompt_value" not in st.session_state:
-    st.session_state.prompt_value = ""
+with tab_metrics:
+    history = load_run_history()
+    if not history:
+        st.info("No eval runs logged yet. Run `python eval/scorer.py` locally to populate metrics.")
+    else:
+        recent = history[-10:]
+
+        st.markdown("### Agent Score Trends")
+        agents = ["Researcher", "Analyst", "Compliance", "Reporter"]
+        chart_data = {a: [r["agent_scores"].get(a, 0) for r in recent] for a in agents}
+        chart_data["Run"] = [f"#{r['id']}" for r in recent]
+
+        import pandas as pd
+        df = pd.DataFrame(chart_data).set_index("Run")
+        st.line_chart(df)
+
+        st.markdown("### Last 10 Runs")
+        for r in reversed(recent):
+            ts = r["timestamp"][:16].replace("T", " ")
+            overall = r["overall_score"]
+            color = "#22c55e" if overall >= 4 else "#f59e0b" if overall >= 3 else "#ef4444"
+            scores = " &nbsp;|&nbsp; ".join(
+                f"{a[:4]}: **{r['agent_scores'].get(a, '?')}**" for a in agents
+            )
+            st.markdown(
+                f'<div style="background:#111;border:1px solid #222;border-radius:8px;padding:0.7rem 1rem;margin-bottom:0.5rem">'
+                f'<span style="color:{color};font-weight:700">{overall}/5</span>'
+                f'&nbsp;&nbsp;<span style="color:#666;font-size:0.8rem">{ts}</span><br>'
+                f'<span style="font-size:0.82rem">{scores}</span><br>'
+                f'<span style="color:#555;font-size:0.75rem">{r["prompt"][:80]}...</span>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+        avgs = {a: round(sum(r["agent_scores"].get(a, 0) for r in history) / len(history), 2) for a in agents}
+        st.markdown("### All-Time Agent Averages")
+        cols = st.columns(4)
+        for i, (agent, avg) in enumerate(avgs.items()):
+            color = "#22c55e" if avg >= 4 else "#f59e0b" if avg >= 3 else "#ef4444"
+            cols[i].markdown(
+                f'<div style="background:#111;border:1px solid #222;border-radius:10px;padding:1rem;text-align:center">'
+                f'<div style="font-size:0.8rem;color:#888">{agent}</div>'
+                f'<div style="font-size:2rem;font-weight:700;color:{color}">{avg}</div>'
+                f'<div style="font-size:0.7rem;color:#555">/ 5.0</div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+with tab_analyze:
+    st.markdown("**Ask the team anything financial**")
+
+    if "prompt_value" not in st.session_state:
+        st.session_state.prompt_value = ""
 
 with st.form("main_form", enter_to_submit=True, border=False):
     col_input, col_btn = st.columns([5, 1])

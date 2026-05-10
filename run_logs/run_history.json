@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "timestamp": "2026-05-10T20:42:37.882419+00:00",
+    "prompt": "Analyze JPMorgan Chase (JPM) stock \u2014 current price, recent trends, and outlook for large-cap banks.",
+    "latency_seconds": 23.83,
+    "total_tokens": 0,
+    "estimated_cost_usd": 0.0,
+    "overall_score": 3.25,
+    "agent_scores": {
+      "Researcher": 4,
+      "Analyst": 2,
+      "Compliance": 2,
+      "Reporter": 5
+    },
+    "completed_agents": [
+      "Researcher",
+      "Analyst",
+      "Compliance",
+      "Reporter"
+    ]
+  },
+  {
+    "id": 2,
+    "timestamp": "2026-05-10T20:42:37.882919+00:00",
+    "prompt": "What are the AML and BSA compliance requirements for wire transfers over $10,000? Are there any recent FinCEN updates?",
+    "latency_seconds": 56.52,
+    "total_tokens": 0,
+    "estimated_cost_usd": 0.0,
+    "overall_score": 3.25,
+    "agent_scores": {
+      "Researcher": 3,
+      "Analyst": 1,
+      "Compliance": 4,
+      "Reporter": 5
+    },
+    "completed_agents": [
+      "Researcher",
+      "Analyst",
+      "Compliance",
+      "Reporter"
+    ]
+  },
+  {
+    "id": 3,
+    "timestamp": "2026-05-10T20:42:37.883184+00:00",
+    "prompt": "Should we issue a $500M loan secured against Apple (AAPL) equity? Assess the risk and compliance requirements.",
+    "latency_seconds": 34.61,
+    "total_tokens": 0,
+    "estimated_cost_usd": 0.0,
+    "overall_score": 4.5,
+    "agent_scores": {
+      "Researcher": 4,
+      "Analyst": 5,
+      "Compliance": 4,
+      "Reporter": 5
+    },
+    "completed_agents": [
+      "Researcher",
+      "Analyst",
+      "Compliance",
+      "Reporter"
+    ]
+  },
+  {
+    "id": 4,
+    "timestamp": "2026-05-10T20:42:37.883438+00:00",
+    "prompt": "Compare Bank of America (BAC) and Goldman Sachs (GS) latest earnings \u2014 focus on trading revenue and loan loss provisions.",
+    "latency_seconds": 22.53,
+    "total_tokens": 0,
+    "estimated_cost_usd": 0.0,
+    "overall_score": 2.5,
+    "agent_scores": {
+      "Researcher": 2,
+      "Analyst": 2,
+      "Compliance": 2,
+      "Reporter": 4
+    },
+    "completed_agents": [
+      "Researcher",
+      "Analyst",
+      "Compliance",
+      "Reporter"
+    ]
+  },
+  {
+    "id": 5,
+    "timestamp": "2026-05-10T20:42:37.883701+00:00",
+    "prompt": "What are the current Basel III capital requirements for regional banks and what are the key compliance risks in 2025?",
+    "latency_seconds": 31.49,
+    "total_tokens": 0,
+    "estimated_cost_usd": 0.0,
+    "overall_score": 4.25,
+    "agent_scores": {
+      "Researcher": 4,
+      "Analyst": 4,
+      "Compliance": 4,
+      "Reporter": 5
+    },
+    "completed_agents": [
+      "Researcher",
+      "Analyst",
+      "Compliance",
+      "Reporter"
+    ]
+  }
+]

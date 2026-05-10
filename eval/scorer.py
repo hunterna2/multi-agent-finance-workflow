@@ -156,6 +156,8 @@ def print_summary(scored_runs: list):
 
 
 if __name__ == "__main__":
+    from run_logs.run_logger import log_run
+
     result_files = sorted(glob(os.path.join(RESULTS_DIR, "run_0*.json")))
     result_files = [f for f in result_files if "_scored" not in f]
 
@@ -166,3 +168,13 @@ if __name__ == "__main__":
     print(f"Scoring {len(result_files)} runs...")
     scored_runs = [score_run(f) for f in result_files]
     print_summary(scored_runs)
+
+    for run in scored_runs:
+        log_run(
+            prompt=run["prompt"],
+            agent_outputs=run["agent_outputs"],
+            scores=run["scores"],
+            overall_score=run["overall_score"],
+            latency_seconds=run["latency_seconds"],
+        )
+    print(f"\nLogged {len(scored_runs)} runs to logging/run_history.json")
